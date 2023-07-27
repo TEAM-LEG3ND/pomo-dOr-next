@@ -19,10 +19,20 @@ body {
   background: rgb(var(--background));
 }
 
+svg {
+  fill: inherit;
+  width: inherit;
+  height: inherit;
+}
+
+svg > path {
+  fill: inherit;
+}
+
 @layer base {
   :root {
-    --color-primary: 0deg 100% 70%;
-    --color-secondary: 0deg 93% 84%;
-    --color-tertiary: 23deg 100% 93%;
+    --color-primary: #ff6666;
+    --color-secondary: #fcb0b0;
+    --color-tertiary: #ffe9db;
   }
 }

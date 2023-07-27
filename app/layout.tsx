@@ -2,6 +2,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { notoSansKr } from "@/styles/fonts";
 import Providers from "./providers";
+import GlobalHeader from "@/components/layout/GlobalHeader";
+import GlobalNavigationBar from "@/components/layout/GlobalNavigationBar";
 
 export const metadata: Metadata = {
   title: "Pomo d'Or",
@@ -15,8 +17,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko" className={`${notoSansKr.variable}`}>
-      <body className="font-notokr">
-        <Providers>{children}</Providers>
+      <body className="flex min-h-screen flex-col font-notokr">
+        <Providers>
+          <GlobalHeader />
+          {children}
+          <GlobalNavigationBar />
+        </Providers>
       </body>
     </html>
   );
