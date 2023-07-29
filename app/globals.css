@@ -25,8 +25,9 @@ svg {
   height: inherit;
 }
 
-svg > path {
+svg path {
   fill: inherit;
+  stroke: inherit;
 }
 
 @layer base {
@@ -34,5 +35,9 @@ svg > path {
     --color-primary: #ff6666;
     --color-secondary: #fcb0b0;
     --color-tertiary: #ffe9db;
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
   }
 }

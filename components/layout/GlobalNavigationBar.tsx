@@ -1,3 +1,5 @@
+"use client";
+
 import { HOME_PATH, MENU_PATH, ROUTINE_PATH } from "@/constants/routes";
 import NavigationBar from "../common/NavigationBar";
 import { Icon } from "../common/Icon";

@@ -15,6 +15,10 @@ export function Icon({ name, ...props }: Props) {
       }),
   });
 
+  if (isLoading) {
+    return <div {...props} />;
+  }
+
   return (
     <span
       dangerouslySetInnerHTML={
