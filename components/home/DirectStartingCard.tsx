@@ -5,7 +5,7 @@ import { Icon } from "../common/Icon";
 
 function DirectStartingCard() {
   return (
-    <Link href={`${ROUTINE_PATH}/1/play`}>
+    <Link href={`${ROUTINE_PATH}/1/timer`}>
       <Card type="fill" className="flex justify-between rounded-xl p-4">
         <Card.Heading heading="바로 시작하기" />
         <Card.Controls

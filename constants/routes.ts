@@ -1,4 +1,4 @@
-export const HOME_PATH = "/";
+export const HOME_PATH = "/home";
 
 export const ROUTINE_PATH = "/routine";
 export const CREATE_ROUTINE_PATH = `${ROUTINE_PATH}/new`;

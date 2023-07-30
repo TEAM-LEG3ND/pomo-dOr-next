@@ -1,5 +1,3 @@
-import Card from "@/components/common/Card";
-import { Icon } from "@/components/common/Icon";
 import Board from "@/components/home/Board";
 import DirectStartingCard from "@/components/home/DirectStartingCard";
 import FriendRoutineList from "@/components/home/FriendRoutineList";
@@ -9,7 +7,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="flex flex-grow flex-col gap-8 p-4">
+    <>
       <Board
         title="내 루틴"
         addon={
@@ -29,6 +27,6 @@ export default function Home() {
       <Board title="실시간 친구들">
         <FriendRoutineList />
       </Board>
-    </main>
+    </>
   );
 }

@@ -9,7 +9,7 @@ function FriendRoutineCard() {
       className="flex h-24 w-full gap-4 overflow-hidden rounded-2xl"
     >
       <div className="aspect-1 h-full w-auto flex-shrink-0 overflow-hidden">
-        <TimerShortcut className="bg-primary-700 stroke-white " />
+        <TimerShortcut className="bg-primary-700 stroke-tertiary " />
       </div>
       <div className="flex-1 self-stretch py-2">
         <Card.Heading heading="뽀모도로 1" />

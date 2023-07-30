@@ -12,7 +12,7 @@ function ShortcutCard() {
 
   const onClickPlay = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    router.push(`${ROUTINE_PATH}/${id}/play`);
+    router.push(`${ROUTINE_PATH}/${id}/timer`);
   };
 
   return (

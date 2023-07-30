@@ -41,3 +41,9 @@ svg path {
     -webkit-tap-highlight-color: transparent;
   }
 }
+
+@layer utility {
+  .transform-origin-center {
+    transform-origin: center;
+  }
+}
