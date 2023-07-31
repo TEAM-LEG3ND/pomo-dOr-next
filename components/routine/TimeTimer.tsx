@@ -1,47 +1,37 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Icon } from "../common/Icon";
+import { useState } from "react";
+import Icon from "../common/icon/Icon";
+import useInterval from "@/hooks/useInterval";
+import Timer from "@/vo/timeTimer";
 
 function TimeTimer() {
   const data = {
-    startTime: Date.now() - 1000 * 60 * 0,
     settingTime: 1000 * 60 * 20,
     currentPhase: 2,
   };
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const [currentTime, setCurrentTime] = useState<number>(
-    Date.now() - data.startTime,
+  const timeTimer = new Timer(data.settingTime, Date.now());
+  const [remainRatio, setRemainRatio] = useState<number>(
+    timeTimer.calculateRemainTimeRatio(),
   );
-  useEffect(() => {
-    if (timerRef.current === null) {
-      timerRef.current = setInterval(() => {
-        setCurrentTime(Date.now() - data.startTime);
-      }, 1000);
-    }
-  }, [data.startTime]);
+  const clearTickTock = useInterval(
+    () => {
+      setRemainRatio(timeTimer.calculateRemainTimeRatio());
+    },
+    { interval: 1000 },
+  );
+
+  if (remainRatio < 0) {
+    clearTickTock();
+  }
 
   const radius = 128;
   const circumference = 2 * Math.PI * radius;
-
-  const calculateRatio = (total: number, remain: number) => remain / total;
-
-  const calculateRemainTimeRatio = useCallback(
-    (startTime: number, settingTime: number) => {
-      const total = 3600000;
-      const ratio = calculateRatio(total, settingTime - currentTime);
-      return ratio;
-    },
-    [currentTime],
-  );
-  const ratio = calculateRemainTimeRatio(data.startTime, data.settingTime);
-  if (timerRef.current !== null && ratio < 0) {
-    clearInterval(timerRef.current);
-  }
-  const strokeLength = ratio >= 0 ? circumference * ratio : 0;
+  const strokeLength = remainRatio >= 0 ? circumference * remainRatio : 0;
   const spaceLength = circumference - strokeLength;
-  const strokeOffset = circumference * (0.25 + ratio);
-  const degree = 360 * ratio;
+  const strokeOffset = circumference * (0.25 + remainRatio);
+  const degree = 360 * remainRatio;
+
   return (
     <div className="aspect-1 h-auto w-full overflow-hidden rounded-3xl p-[10%]">
       <div className="relative h-full w-full">
