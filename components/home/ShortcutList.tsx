@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Icon from "../common/icon/PrefetchedIcon";
+import PrefetchedIcon from "../common/icon/PrefetchedIcon";
 import ShortcutCard from "./ShortcutCard";
 import { CREATE_ROUTINE_PATH } from "@/constants/routes";
 import Card from "../common/Card";
@@ -11,7 +11,10 @@ function ShortcutList() {
       <ShortcutCard id={2} />
       <Link href={`${CREATE_ROUTINE_PATH}`}>
         <Card className="flex h-full items-center justify-center shadow-lg shadow-neutral-50">
-          <Icon name="round-plus" className="h-10 w-10 fill-primary-700" />
+          <PrefetchedIcon
+            name="round-plus"
+            className="h-10 w-10 fill-primary-700"
+          />
         </Card>
       </Link>
     </div>

@@ -1,5 +1,5 @@
 import Card from "../common/Card";
-import Icon from "../common/icon/PrefetchedIcon";
+import PrefetchedIcon from "../common/icon/PrefetchedIcon";
 import { ROUTINE_PATH } from "@/constants/routes";
 import Link from "next/link";
 
@@ -15,7 +15,7 @@ function ShortcutCard({ id }: Props) {
         <Card.SubHead subhead={"뽀모도로"} />
         <Card.Controls
           as={
-            <Icon
+            <PrefetchedIcon
               name="play"
               className="h-8 w-8 fill-white stroke-primary-700 hover:stroke-primary-600"
             />

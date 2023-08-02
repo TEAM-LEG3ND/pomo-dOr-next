@@ -1,11 +1,9 @@
-import TimeTimer from "@/components/routine/TimeTimer";
+import TimeTimer from "@/components/timer/TimeTimer";
 
 function Page() {
   return (
     <>
-      <section className="">
-        <TimeTimer />
-      </section>
+      <section className=""></section>
     </>
   );
 }
