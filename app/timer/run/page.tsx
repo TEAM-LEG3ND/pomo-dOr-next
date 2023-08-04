@@ -1,16 +1,13 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ENDED_TIMER_PATH } from "@/constants/routes";
 import TimeTimer from "@/components/timer/TimeTimer";
+import { TimerSettingContext } from "../providers";
 
-function Page({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
-  const { workTime, breakTime, repeat } = searchParams;
+function Page() {
+  const { workTime, breakTime, repeat } = useContext(TimerSettingContext);
   const [phase, setPhase] = useState(0);
   const router = useRouter();
 
@@ -24,7 +21,7 @@ function Page({
       router.push(ENDED_TIMER_PATH);
     }
     setPhase((p) => p + 1);
-  }, [phase]);
+  }, [phase, router, timePhases.length]);
 
   return (
     <>

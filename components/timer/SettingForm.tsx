@@ -1,14 +1,12 @@
 "use client";
 
+import { TimerSetting, TimerSettingActionContext } from "@/app/timer/providers";
 import { RUNNING_TIMER_PATH } from "@/constants/routes";
 import { useRouter } from "next/navigation";
+import { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-type SettingInputs = {
-  workTime: number;
-  breakTime: number;
-  repeat: number;
-};
+type SettingInputs = TimerSetting;
 
 function SettingForm() {
   const {
@@ -17,18 +15,26 @@ function SettingForm() {
     formState: { errors },
   } = useForm<SettingInputs>();
   const router = useRouter();
+  const setTimerSetting = useContext(TimerSettingActionContext);
 
-  const onSubmit: SubmitHandler<SettingInputs> = (data) => {
-    console.log(data);
-  };
-  const onClick: SubmitHandler<SettingInputs> = (data) => {
+  const onClick: SubmitHandler<SettingInputs> = ({
+    workTime,
+    breakTime,
+    repeat,
+  }) => {
+    setTimerSetting({
+      workTime,
+      breakTime,
+      repeat,
+    });
     router.push(
-      `${RUNNING_TIMER_PATH}?workTime=${data.workTime}&breakTime=${data.breakTime}&repeat=${data.repeat}`,
+      RUNNING_TIMER_PATH,
+      // `${RUNNING_TIMER_PATH}?workTime=${data.workTime}&breakTime=${data.breakTime}&repeat=${data.repeat}`,
     );
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
+    <form className="flex flex-col">
       <label>집중 시간</label>
       <input
         type="number"
