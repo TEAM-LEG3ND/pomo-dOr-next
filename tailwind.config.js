@@ -28,9 +28,6 @@ module.exports = {
         tertiary: "var(--color-tertiary)",
       },
     },
-    gridTemplateRows: {
-      layout: "auto minmax(0, 1fr) auto",
-    },
   },
   plugins: [
     require("@tailwindcss/typography"),

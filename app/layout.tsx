@@ -20,7 +20,7 @@ export default function RootLayout({
       <body className="flex min-h-screen flex-col font-notokr">
         <Providers>
           <GlobalHeader />
-          {children}
+          <main className="flex-grow p-4">{children}</main>
           <GlobalNavigationBar />
         </Providers>
       </body>
