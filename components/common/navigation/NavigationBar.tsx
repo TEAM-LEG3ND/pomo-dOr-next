@@ -7,7 +7,7 @@ interface Props {
 
 function NavigationBar({ children }: Props) {
   return (
-    <div className="sticky bottom-0 flex w-full items-center justify-around border border-gray-100 bg-white px-4 py-2">
+    <div className="flex h-full w-full items-center justify-around bg-white px-4 py-2">
       {children}
     </div>
   );

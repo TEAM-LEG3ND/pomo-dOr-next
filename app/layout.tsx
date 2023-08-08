@@ -17,10 +17,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko" className={`${notoSansKr.variable}`}>
-      <body className="flex min-h-screen flex-col font-notokr">
+      <body className="h-full min-h-screen font-notokr">
         <Providers>
           <GlobalHeader />
-          <main className="flex-grow p-4">{children}</main>
+          <main className="mb-14 flex-shrink-0 px-4">{children}</main>
           <GlobalNavigationBar />
         </Providers>
       </body>
