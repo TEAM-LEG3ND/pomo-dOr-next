@@ -2,7 +2,11 @@ import TimeTimerBackground from "./TimeTimerBackground";
 import TimeTimerCore from "./TimeTimerCore";
 
 interface Props {
-  settingTime: number;
+  phase: {
+    set: number;
+    type: string;
+    time: number;
+  };
   onTimeout: () => void;
 }
 

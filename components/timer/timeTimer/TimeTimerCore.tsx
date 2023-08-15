@@ -1,15 +1,20 @@
 "use client";
 
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import useInterval from "@/hooks/useInterval";
 import Timer from "@/vo/timeTimer";
 
 interface Props {
-  settingTime: number;
+  phase: {
+    set: number;
+    type: string;
+    time: number;
+  };
   onTimeout: () => void;
 }
 
-function TimeTimerCore({ settingTime, onTimeout }: Props) {
+function TimeTimerCore({ phase, onTimeout }: Props) {
+  const settingTime = phase?.time ?? 0;
   const timeTimer = new Timer(settingTime, Date.now());
   const [remainRatio, setRemainRatio] = useState<number>(
     timeTimer.calculateRemainTimeRatio(),
