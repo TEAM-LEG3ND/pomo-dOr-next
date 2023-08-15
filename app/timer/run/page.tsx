@@ -3,7 +3,7 @@
 import { useCallback, useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ENDED_TIMER_PATH } from "@/constants/routes";
-import TimeTimer from "@/components/timer/TimeTimer";
+import TimeTimer from "@/components/timer/timeTimer/TimeTimer";
 import { TimerSettingContext } from "../providers";
 
 function Page() {

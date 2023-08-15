@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import Icon from "../common/icon/Icon";
+import Icon from "../../common/icon/Icon";
 
 interface Props {
   children: ReactNode;

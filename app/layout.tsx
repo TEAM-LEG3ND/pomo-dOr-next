@@ -20,7 +20,7 @@ export default function RootLayout({
       <body className="h-full min-h-screen font-notokr">
         <Providers>
           <GlobalHeader />
-          <main className="mb-14 flex-shrink-0 px-4">{children}</main>
+          <main className="mb-14 px-4">{children}</main>
           <GlobalNavigationBar />
         </Providers>
       </body>
