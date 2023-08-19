@@ -1,27 +1,38 @@
 "use client";
 
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ENDED_TIMER_PATH } from "@/constants/routes";
 import TimeTimer from "@/components/timer/timeTimer/TimeTimer";
 import { TimerPhasesContext } from "../providers";
+import Timer from "@/components/timer/Timer";
 
 function Page() {
   const timerPhases = useContext(TimerPhasesContext);
   const [phase, setPhase] = useState(0);
   const router = useRouter();
 
-  const onTimeout = useCallback(() => {
+  const handleTimeout = () => {
     if (phase >= timerPhases.length - 1) {
       router.push(ENDED_TIMER_PATH);
+      return;
     }
     setPhase((p) => p + 1);
-  }, [phase, router, timerPhases.length]);
+  };
 
   return (
     <>
       <section>
-        <TimeTimer phase={timerPhases[phase]} onTimeout={onTimeout} />
+        <Timer
+          settingTime={{
+            hour: 0,
+            minute: timerPhases[phase].time,
+            second: 0,
+          }}
+          onTimeout={handleTimeout}
+        >
+          <TimeTimer />
+        </Timer>
       </section>
       <section>Info</section>
     </>
