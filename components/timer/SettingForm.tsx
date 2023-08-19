@@ -1,12 +1,16 @@
 "use client";
 
-import { TimerSetting, TimerSettingActionContext } from "@/app/timer/providers";
+import { TimerPhasesActionContext } from "@/app/timer/providers";
 import { RUNNING_TIMER_PATH } from "@/constants/routes";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-type SettingInputs = TimerSetting;
+type SettingInputs = {
+  workTime: number;
+  breakTime: number;
+  repeat: number;
+};
 
 function SettingForm() {
   const {
@@ -15,22 +19,19 @@ function SettingForm() {
     formState: { errors },
   } = useForm<SettingInputs>();
   const router = useRouter();
-  const setTimerSetting = useContext(TimerSettingActionContext);
+  const handleTimerPhases = useContext(TimerPhasesActionContext);
 
   const onClick: SubmitHandler<SettingInputs> = ({
     workTime,
     breakTime,
     repeat,
   }) => {
-    setTimerSetting({
-      workTime,
-      breakTime,
-      repeat,
-    });
-    router.push(
-      RUNNING_TIMER_PATH,
-      // `${RUNNING_TIMER_PATH}?workTime=${data.workTime}&breakTime=${data.breakTime}&repeat=${data.repeat}`,
-    );
+    const timerPhases = Array.from({ length: Number(repeat) }, (_, i) => [
+      { set: i, type: "work", time: workTime },
+      { set: i, type: "break", time: breakTime },
+    ]).flat();
+    handleTimerPhases(timerPhases);
+    router.push(RUNNING_TIMER_PATH);
   };
 
   return (

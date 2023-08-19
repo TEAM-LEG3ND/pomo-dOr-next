@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import Icon from "../common/icon/Icon";
+import { ReactNode, memo } from "react";
+import Icon from "../../common/icon/Icon";
 
 interface Props {
   children: ReactNode;
@@ -14,4 +14,4 @@ function TimeTimerBackground({ children }: Props) {
   );
 }
 
-export default TimeTimerBackground;
+export default memo(TimeTimerBackground);

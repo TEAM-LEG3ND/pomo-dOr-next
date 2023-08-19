@@ -1,5 +1,3 @@
-import TimeTimer from "@/components/timer/TimeTimer";
-
 function Page() {
   return (
     <>

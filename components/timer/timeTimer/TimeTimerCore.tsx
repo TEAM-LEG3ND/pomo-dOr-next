@@ -1,32 +1,9 @@
-"use client";
-
-import { memo, useCallback, useState } from "react";
-import useInterval from "@/hooks/useInterval";
-import Timer from "@/vo/timeTimer";
-
 interface Props {
-  settingTime: number;
-  onTimeout: () => void;
+  remain?: number;
 }
 
-function TimeTimerCore({ settingTime, onTimeout }: Props) {
-  const timeTimer = new Timer(settingTime, Date.now());
-  const [remainRatio, setRemainRatio] = useState<number>(
-    timeTimer.calculateRemainTimeRatio(),
-  );
-
-  const clearTickTock = useInterval(
-    useCallback(() => {
-      const newRemainTimeRatio = timeTimer.calculateRemainTimeRatio();
-      if (newRemainTimeRatio < 0) {
-        clearTickTock();
-        onTimeout();
-        return;
-      }
-      setRemainRatio(newRemainTimeRatio);
-    }, [onTimeout]),
-    { interval: 1000 },
-  );
+function TimeTimerCore({ remain = 0 }: Props) {
+  const remainRatio = remain / (60 * 60 * 1000);
 
   const radius = 128;
   const circumference = 2 * Math.PI * radius;
@@ -74,4 +51,4 @@ function TimeTimerCore({ settingTime, onTimeout }: Props) {
   );
 }
 
-export default memo(TimeTimerCore);
+export default TimeTimerCore;

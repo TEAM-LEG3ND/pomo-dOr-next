@@ -1,10 +1,8 @@
+import { ExtendedChildrenProps } from "../Timer";
 import TimeTimerBackground from "./TimeTimerBackground";
 import TimeTimerCore from "./TimeTimerCore";
 
-interface Props {
-  settingTime: number;
-  onTimeout: () => void;
-}
+interface Props extends ExtendedChildrenProps {}
 
 function TimeTimer(props: Props) {
   return (

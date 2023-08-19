@@ -1,58 +1,37 @@
 "use client";
 
-// import { ValueOf } from "@/utils/types";
 import { ReactNode, createContext, useState } from "react";
 
 interface Props {
   children: ReactNode;
 }
 
-// const TimerPage = {
-//   set: 0,
-//   run: 1,
-//   end: 2,
-// } as const;
-
-export type TimerSetting = {
-  workTime: number;
-  breakTime: number;
-  repeat: number;
+export type TimerPhase = {
+  set: number;
+  type: string;
+  time: number;
 };
 
-// export const PageChangeContext = createContext<
-//   (page: keyof typeof TimerPage) => void
-// >((page) => {});
+const initialPhases = [{ set: 0, type: "", time: 0 }];
 
-const initialSetting = {
-  workTime: 1,
-  breakTime: 1,
-  repeat: 1,
-};
-
-export const TimerSettingContext = createContext<TimerSetting>(initialSetting);
-export const TimerSettingActionContext = createContext<
-  (setting: TimerSetting) => void
->((setting) => {});
+export const TimerPhasesContext = createContext<TimerPhase[]>(initialPhases);
+export const TimerPhasesActionContext = createContext<
+  (phases: TimerPhase[]) => void
+>((phases) => {});
 
 function Providers({ children }: Props) {
-  // const [page, setPage] = useState<ValueOf<typeof TimerPage>>(TimerPage.set);
-  const [timerSetting, setTimerSetting] =
-    useState<TimerSetting>(initialSetting);
+  const [timerPhases, setTimerPhases] = useState<TimerPhase[]>(initialPhases);
 
-  // const onChangePage = (page: keyof typeof TimerPage) => {
-  //   setPage(TimerPage[page]);
-  // };
-
-  const onChangeTimerSetting = (setting: TimerSetting) => {
-    setTimerSetting(setting);
+  const onChangeTimerPhases = (phases: TimerPhase[]) => {
+    setTimerPhases(phases);
   };
 
   return (
-    <TimerSettingContext.Provider value={timerSetting}>
-      <TimerSettingActionContext.Provider value={onChangeTimerSetting}>
+    <TimerPhasesContext.Provider value={timerPhases}>
+      <TimerPhasesActionContext.Provider value={onChangeTimerPhases}>
         {children}
-      </TimerSettingActionContext.Provider>
-    </TimerSettingContext.Provider>
+      </TimerPhasesActionContext.Provider>
+    </TimerPhasesContext.Provider>
   );
 }
 
