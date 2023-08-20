@@ -1,7 +1,7 @@
 import { SETTING_TIMER_PATH } from "@/constants/routes";
 import Link from "next/link";
 import Card from "../common/Card";
-import Icon from "../common/icon/PrefetchedIcon";
+import ServerIcon from "../common/icon/ServerIcon";
 
 function DirectStartingCard() {
   return (
@@ -10,7 +10,7 @@ function DirectStartingCard() {
         <Card.Heading heading="바로 시작하기" />
         <Card.Controls
           as={
-            <Icon
+            <ServerIcon
               name="play"
               className="h-8 w-8 fill-white stroke-primary-700"
             />
