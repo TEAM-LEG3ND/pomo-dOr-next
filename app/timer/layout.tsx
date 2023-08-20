@@ -1,22 +1,16 @@
 "use client";
 
-import { ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
 import Providers from "./providers";
-import { useQueryClient } from "@tanstack/react-query";
 import { createIconQuery } from "@/components/common/icon/ClientIcon";
+import usePrefetchQuery from "@/hooks/usePrefetchQuery";
 
 interface Props {
   children: ReactNode;
 }
 
 function Layout({ children }: Props) {
-  const queryClient = useQueryClient();
-  useEffect(() => {
-    const prefetchClockBackground = async () => {
-      await queryClient.prefetchQuery(createIconQuery("clock"));
-    };
-    prefetchClockBackground();
-  }, []);
+  usePrefetchQuery(createIconQuery("clock"));
 
   return <Providers>{children}</Providers>;
 }
