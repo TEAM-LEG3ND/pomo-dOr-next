@@ -7,9 +7,10 @@ interface Props extends Omit<HTMLAttributes<HTMLSpanElement>, "children"> {
   name: string;
 }
 
-async function PrefetchedIcon({ name, ...props }: Props) {
-  const initialData = await fetchIcon(name, { baseUrl: S3_BASE_URL });
-  return <Icon name={name} svg={initialData} {...props} />;
+async function ServerIcon({ name, ...props }: Props) {
+  const svg = await fetchIcon(name, { baseUrl: S3_BASE_URL });
+
+  return <Icon svg={svg} {...props} />;
 }
 
-export default PrefetchedIcon;
+export default ServerIcon;

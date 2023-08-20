@@ -1,5 +1,5 @@
 import { ReactNode, memo } from "react";
-import Icon from "../../common/icon/Icon";
+import ClientIcon from "@/components/common/icon/ClientIcon";
 
 interface Props {
   children: ReactNode;
@@ -8,7 +8,10 @@ interface Props {
 function TimeTimerBackground({ children }: Props) {
   return (
     <div className="relative h-full w-full">
-      <Icon name="clock" className="absolute left-0 top-0 h-full w-full" />
+      <ClientIcon
+        name="clock"
+        className="absolute left-0 top-0 h-full w-full"
+      />
       {children}
     </div>
   );
