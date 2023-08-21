@@ -22,6 +22,15 @@ function TimeTimerCore({ remain = 0 }: Props) {
           <clipPath id="circle-clip">
             <circle r={radius - 22} cx={radius} cy={radius} />
           </clipPath>
+          <filter id="shadow">
+            <feDropShadow
+              dx={1}
+              dy={2}
+              stdDeviation={2}
+              floodColor="rgba(0, 0, 0, 0.25)"
+              floodOpacity={0.5}
+            />
+          </filter>
         </defs>
         <circle
           r={radius}
@@ -34,7 +43,7 @@ function TimeTimerCore({ remain = 0 }: Props) {
           className="fill-transparent stroke-red-500"
           clipPath={"url(#circle-clip)"}
         />
-        <g className="fill-white drop-shadow-[0_1px_2px_rgba(0_0_0/0.25)]">
+        <g className="fill-white" filter={"url(#shadow)"}>
           <circle r={radius / 8} cx={radius} cy={radius} />
           <rect
             width={radius / 10}
