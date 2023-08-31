@@ -1,7 +1,16 @@
 "use client";
 
 import useTimer from "@/hooks/useTimer";
-import { Children, ReactElement, cloneElement, useEffect } from "react";
+import {
+  Children,
+  ReactElement,
+  cloneElement,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+} from "react";
 
 interface Props {
   settingTime: {
@@ -14,22 +23,13 @@ interface Props {
   onResume?: () => void;
   onTerminate?: () => void;
   onTimeout?: () => void;
-  children: ReactElement;
+  children: ReactElement | ReactElement[];
 }
 
-export interface ExtendedChildrenProps {
-  remain?: number;
-}
+const TimerContext = createContext<Record<string, any>>({});
+const TimerControlContext = createContext<Record<string, () => void>>({});
 
-function Timer({
-  settingTime,
-  onStart,
-  onPause,
-  onResume,
-  onTerminate,
-  onTimeout,
-  children,
-}: Props) {
+function Timer({ settingTime, onPause, onResume, onTimeout, children }: Props) {
   const settingTimeInMs =
     (settingTime.hour * 60 * 60 +
       settingTime.minute * 60 +
@@ -50,42 +50,84 @@ function Timer({
     };
   }, [settingTime, timerControls, settingTimeInMs]);
 
-  const handleTimerStart = () => {
-    timerControls.start();
-    if (onStart) onStart();
-  };
+  const handleTimerPause = useCallback(() => {
+    if (isRunning === false) return;
 
-  const handleTimerPause = () => {
     timerControls.pause();
     if (onPause) onPause();
-  };
+  }, [timerControls, onPause, isRunning]);
 
-  const handleTimerResume = () => {
+  const handleTimerResume = useCallback(() => {
+    if (isRunning === true) return;
+
     timerControls.resume();
     if (onResume) onResume();
-  };
+  }, [timerControls, onResume, isRunning]);
 
-  const handleTimerQuit = () => {
-    timerControls.terminate();
-    if (onTerminate) onTerminate();
-  };
+  const timerHandlersMemo = useMemo(
+    () => ({ handleTimerPause, handleTimerResume }),
+    [handleTimerPause, handleTimerResume],
+  );
+
+  return (
+    <TimerContext.Provider value={{ remainingTime, isRunning }}>
+      <TimerControlContext.Provider value={timerHandlersMemo}>
+        {children}
+      </TimerControlContext.Provider>
+    </TimerContext.Provider>
+  );
+}
+
+interface ControlsProps {
+  as: ReactElement;
+}
+
+export interface TimerControlsChildrenProps {
+  isRunning?: boolean;
+  onTimerPause?: () => void;
+  onTimerResume?: () => void;
+}
+
+function TimerControl({ as }: ControlsProps) {
+  const { handleTimerPause, handleTimerResume } =
+    useContext(TimerControlContext);
+  const { isRunning } = useContext(TimerContext);
+  const control = Children.only(as);
 
   return (
     <>
-      {Children.map(children, (child) =>
-        cloneElement(child, {
-          remain: children.props.remain ?? remainingTime,
-        }),
-      )}
-      <div>
-        {isRunning ? (
-          <button onClick={handleTimerPause}>정지</button>
-        ) : (
-          <button onClick={handleTimerResume}>시작</button>
-        )}
-      </div>
+      {cloneElement(control, {
+        isRunning,
+        onTimerPause: handleTimerPause,
+        onTimerResume: handleTimerResume,
+      })}
     </>
   );
 }
 
-export default Timer;
+interface ViewProps {
+  as: ReactElement;
+}
+
+export interface TimerViewChildrenProps {
+  remain?: number;
+}
+
+function TimerView({ as }: ViewProps) {
+  const { remainingTime } = useContext(TimerContext);
+
+  return (
+    <>
+      {Children.map(as, (child) =>
+        cloneElement(child, {
+          remain: as.props.remain ?? remainingTime,
+        }),
+      )}
+    </>
+  );
+}
+
+export default Object.assign(Timer, {
+  Control: TimerControl,
+  View: TimerView,
+});
