@@ -1,14 +1,15 @@
 "use client";
 
-import useInterval from "@/hooks/useInterval";
+import useTimer from "@/hooks/useTimer";
 import {
   Children,
   ReactElement,
   cloneElement,
+  createContext,
+  useCallback,
+  useContext,
   useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
+  useMemo,
 } from "react";
 
 interface Props {
@@ -17,145 +18,116 @@ interface Props {
     minute: number;
     second: number;
   };
-  options?: {
-    running: boolean;
-  };
   onStart?: () => void;
   onPause?: () => void;
   onResume?: () => void;
-  onReset?: () => void;
+  onTerminate?: () => void;
   onTimeout?: () => void;
-  children: ReactElement;
+  children: ReactElement | ReactElement[];
 }
 
-export interface ExtendedChildrenProps {
-  remain?: number;
-}
+const TimerContext = createContext<Record<string, any>>({});
+const TimerControlContext = createContext<Record<string, () => void>>({});
 
-function Timer({
-  settingTime,
-  options = {
-    running: true,
-  },
-  onStart,
-  onPause,
-  onResume,
-  onReset,
-  onTimeout,
-  children,
-}: Props) {
+function Timer({ settingTime, onPause, onResume, onTimeout, children }: Props) {
   const settingTimeInMs =
     (settingTime.hour * 60 * 60 +
       settingTime.minute * 60 +
       settingTime.second) *
     1000;
-  const interval = 10;
-  const [remainTime, setRemainTime] = useState(settingTimeInMs);
-  const [isRunning, setIsRunning] = useState(options.running);
-  const startTimeRef = useRef(new Date());
-  const lastPausePointRef = useRef(new Date());
-  const totalPausedTimeRef = useRef(0);
-  const [start, clear] = useInterval(() => {
-    const updatedRemainTime =
-      settingTimeInMs -
-      (Date.now() -
-        startTimeRef.current.getTime() -
-        totalPausedTimeRef.current);
-    if (updatedRemainTime <= 0) {
-      setRemainTime(0);
-      return;
-    }
-    setRemainTime(updatedRemainTime);
-  }, interval);
 
-  useLayoutEffect(() => {
-    startTimeRef.current = new Date();
-    setRemainTime(settingTimeInMs);
-    start();
-    console.time("timer");
-
-    return () => {
-      clear();
-    };
-  }, [settingTime]);
+  const [remainingTime, isRunning, timerControls] = useTimer(onTimeout, {
+    initialTime: settingTimeInMs,
+    updateInterval: 10,
+  });
 
   useEffect(() => {
-    const updatedRemainTime =
-      settingTimeInMs -
-      (Date.now() -
-        startTimeRef.current.getTime() -
-        totalPausedTimeRef.current);
-    if (updatedRemainTime > 0) return;
-    clear();
-    console.timeEnd("timer");
-    totalPausedTimeRef.current = 0;
-    if (onTimeout) onTimeout();
-  }, [settingTime, remainTime, onTimeout, clear]);
+    timerControls.reset(settingTimeInMs);
+    timerControls.start();
 
-  const startTimer = () => {
-    if (isRunning) return;
-    setIsRunning(true);
-    startTimeRef.current = new Date();
-    start();
-  };
+    return () => {
+      timerControls.terminate();
+    };
+  }, [settingTime, timerControls, settingTimeInMs]);
 
-  const pauseTimer = () => {
-    if (!isRunning) return;
-    clear();
-    console.time("pause");
-    lastPausePointRef.current = new Date();
-    setIsRunning(false);
-  };
+  const handleTimerPause = useCallback(() => {
+    if (isRunning === false) return;
 
-  const resumeTimer = () => {
-    if (isRunning) return;
-    setIsRunning(true);
-    totalPausedTimeRef.current +=
-      Date.now() - lastPausePointRef.current.getTime();
-    start();
-    console.timeEnd("pause");
-  };
-
-  const resetTimer = () => {
-    clear();
-    setRemainTime(settingTimeInMs);
-    setIsRunning(false);
-  };
-
-  const handleTimerStart = () => {
-    startTimer();
-    if (onStart) onStart();
-  };
-
-  const handleTimerPause = () => {
-    pauseTimer();
+    timerControls.pause();
     if (onPause) onPause();
-  };
-  const handleTimerResume = () => {
-    resumeTimer();
+  }, [timerControls, onPause, isRunning]);
+
+  const handleTimerResume = useCallback(() => {
+    if (isRunning === true) return;
+
+    timerControls.resume();
     if (onResume) onResume();
-  };
-  const handleTimerReset = () => {
-    resetTimer();
-    if (onReset) onReset();
-  };
+  }, [timerControls, onResume, isRunning]);
+
+  const timerHandlersMemo = useMemo(
+    () => ({ handleTimerPause, handleTimerResume }),
+    [handleTimerPause, handleTimerResume],
+  );
+
+  return (
+    <TimerContext.Provider value={{ remainingTime, isRunning }}>
+      <TimerControlContext.Provider value={timerHandlersMemo}>
+        {children}
+      </TimerControlContext.Provider>
+    </TimerContext.Provider>
+  );
+}
+
+interface ControlsProps {
+  as: ReactElement;
+}
+
+export interface TimerControlsChildrenProps {
+  isRunning?: boolean;
+  onTimerPause?: () => void;
+  onTimerResume?: () => void;
+}
+
+function TimerControl({ as }: ControlsProps) {
+  const { handleTimerPause, handleTimerResume } =
+    useContext(TimerControlContext);
+  const { isRunning } = useContext(TimerContext);
+  const control = Children.only(as);
 
   return (
     <>
-      {Children.map(children, (child) =>
-        cloneElement(child, {
-          remain: children.props.remain ?? remainTime,
-        }),
-      )}
-      <div>
-        {isRunning ? (
-          <button onClick={handleTimerPause}>정지</button>
-        ) : (
-          <button onClick={handleTimerResume}>시작</button>
-        )}
-      </div>
+      {cloneElement(control, {
+        isRunning,
+        onTimerPause: handleTimerPause,
+        onTimerResume: handleTimerResume,
+      })}
     </>
   );
 }
 
-export default Timer;
+interface ViewProps {
+  as: ReactElement;
+}
+
+export interface TimerViewChildrenProps {
+  remain?: number;
+}
+
+function TimerView({ as }: ViewProps) {
+  const { remainingTime } = useContext(TimerContext);
+
+  return (
+    <>
+      {Children.map(as, (child) =>
+        cloneElement(child, {
+          remain: as.props.remain ?? remainingTime,
+        }),
+      )}
+    </>
+  );
+}
+
+export default Object.assign(Timer, {
+  Control: TimerControl,
+  View: TimerView,
+});

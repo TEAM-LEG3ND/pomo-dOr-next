@@ -1,8 +1,8 @@
-import { ExtendedChildrenProps } from "../Timer";
+import { TimerViewChildrenProps } from "../Timer";
 import TimeTimerBackground from "./TimeTimerBackground";
 import TimeTimerCore from "./TimeTimerCore";
 
-interface Props extends ExtendedChildrenProps {}
+interface Props extends TimerViewChildrenProps {}
 
 function TimeTimer(props: Props) {
   return (

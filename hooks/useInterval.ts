@@ -2,6 +2,7 @@ import { useCallback, useRef } from "react";
 
 function useInterval(callback: () => void, interval: number) {
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const callbackRef = useRef(callback);
 
   const clear = useCallback(() => {
     if (intervalRef.current === null) return false;
@@ -14,10 +15,10 @@ function useInterval(callback: () => void, interval: number) {
   const start = useCallback(() => {
     if (intervalRef.current === null) {
       intervalRef.current = setInterval(() => {
-        callback();
+        callbackRef.current();
       }, interval);
     }
-  }, [callback, interval]);
+  }, [interval]);
 
   return [start, clear];
 }
