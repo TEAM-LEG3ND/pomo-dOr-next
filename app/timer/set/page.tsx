@@ -1,4 +1,4 @@
-import SettingForm from "@/components/timer/SettingForm";
+import SettingForm from "./_component/SettingForm";
 
 function Page() {
   return (

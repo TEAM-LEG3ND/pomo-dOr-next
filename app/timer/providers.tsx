@@ -1,8 +1,8 @@
 "use client";
 
-import { TimerControlsPanelProvider } from "@/components/timer/TimerControlsPanel";
-import { TimerPhase } from "@/components/timer/types";
+import { TimerPhase } from "@/app/timer/types";
 import { ReactNode, createContext, useState } from "react";
+import { TimerControlsPanelProvider } from "./run/_component/TimerControlsPanel";
 
 interface Props {
   children: ReactNode;

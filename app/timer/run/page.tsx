@@ -1,15 +1,15 @@
 "use client";
 
 import { useContext, useState } from "react";
-import TimeTimer from "@/components/timer/timeTimer/TimeTimer";
 import { TimerPhasesContext } from "../providers";
 import { useRouter } from "next/navigation";
 import { ENDED_TIMER_PATH } from "@/constants/routes";
-import Timer from "@/components/timer/Timer";
+import Timer from "@/app/timer/run/_component/Timer";
+import TimeTimer from "./_component/timeTimer/TimeTimer";
 import TimerControlsPanel, {
   TimerControlsPanelPortal,
-} from "@/components/timer/TimerControlsPanel";
-import TimerInfoPanel from "@/components/timer/TimerInfoPanel";
+} from "./_component/TimerControlsPanel";
+import TimerInfoPanel from "./_component/TimerInfoPanel";
 
 function Page() {
   const timerPhases = useContext(TimerPhasesContext);

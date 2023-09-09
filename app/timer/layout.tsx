@@ -2,15 +2,14 @@
 
 import { ReactNode } from "react";
 import Providers from "./providers";
-import { createIconQuery } from "@/components/common/icon/ClientIcon";
-import usePrefetchQuery from "@/hooks/usePrefetchQuery";
+import usePrefetchIconQuery from "@/queries/asset/usePrefetchIconQuery";
 
 interface Props {
   children: ReactNode;
 }
 
 function Layout({ children }: Props) {
-  usePrefetchQuery(createIconQuery("clock"));
+  usePrefetchIconQuery("clock");
 
   return <Providers>{children}</Providers>;
 }
