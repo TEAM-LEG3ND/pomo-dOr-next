@@ -5,9 +5,10 @@ import { RUNNING_TIMER_PATH } from "@/constants/routes";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { createTimerPhases } from "./utils";
 
 type SettingInputs = {
-  workTime: number;
+  focusTime: number;
   breakTime: number;
   repeat: number;
 };
@@ -22,14 +23,12 @@ function SettingForm() {
   const handleTimerPhases = useContext(TimerPhasesActionContext);
 
   const onClick: SubmitHandler<SettingInputs> = ({
-    workTime,
+    focusTime,
     breakTime,
     repeat,
   }) => {
-    const timerPhases = Array.from({ length: Number(repeat) }, (_, i) => [
-      { set: i, type: "work", time: workTime },
-      { set: i, type: "break", time: breakTime },
-    ]).flat();
+    const timerPhases = createTimerPhases(focusTime, breakTime, repeat);
+
     handleTimerPhases(timerPhases);
     router.push(RUNNING_TIMER_PATH);
   };
@@ -39,7 +38,7 @@ function SettingForm() {
       <label>집중 시간</label>
       <input
         type="number"
-        {...register("workTime", { required: true, min: 1, max: 60 })}
+        {...register("focusTime", { required: true, min: 1, max: 60 })}
         className=""
       />
       <label>휴식 시간</label>

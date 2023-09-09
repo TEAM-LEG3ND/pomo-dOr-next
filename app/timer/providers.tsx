@@ -6,13 +6,7 @@ interface Props {
   children: ReactNode;
 }
 
-export type TimerPhase = {
-  set: number;
-  type: string;
-  time: number;
-};
-
-const initialPhases = [{ set: 0, type: "", time: 0 }];
+const initialPhases = [{ phase: 0, type: "focus" as const, time: 0 }];
 
 export const TimerPhasesContext = createContext<TimerPhase[]>(initialPhases);
 export const TimerPhasesActionContext = createContext<
