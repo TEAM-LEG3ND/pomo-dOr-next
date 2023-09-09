@@ -1,7 +1,7 @@
-import Board from "@/components/home/Board";
-import DirectStartingCard from "@/components/home/DirectStartingCard";
-import FriendRoutineList from "@/components/home/FriendRoutineList";
-import ShortcutList from "@/components/home/ShortcutList";
+import Board from "./_component/Board";
+import ShortcutList from "./_component/ShortcutList";
+import DirectStartingCard from "@/app/home/_component/DirectStartingCard";
+import FriendRoutineList from "./_component/FriendRoutineList";
 import { ROUTINE_PATH } from "@/constants/routes";
 import Link from "next/link";
 

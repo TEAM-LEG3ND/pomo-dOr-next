@@ -1,9 +1,10 @@
-import "./globals.css";
+import "./_styles/globals.css";
 import type { Metadata } from "next";
-import { notoSansKr } from "@/styles/fonts";
+import { notoSansKr } from "@/app/_styles/fonts";
 import Providers from "./providers";
-import GlobalHeader from "@/components/layout/GlobalHeader";
-import GlobalNavigationBar from "@/components/layout/GlobalNavigationBar";
+import GlobalHeader from "./_component/GlobalHeader";
+import GlobalNavigationBar from "./_component/GlobalNavigationBar";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 export const metadata: Metadata = {
   title: "Pomo d'Or",
@@ -21,6 +22,7 @@ export default function RootLayout({
         <Providers>
           <GlobalHeader />
           <main className="mb-14 px-4">{children}</main>
+          <ReactQueryDevtools initialIsOpen={true} />
           <GlobalNavigationBar />
         </Providers>
       </body>

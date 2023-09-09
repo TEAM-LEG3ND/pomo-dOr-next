@@ -1,18 +1,14 @@
 "use client";
 
+import { TimerPhase } from "@/app/timer/types";
 import { ReactNode, createContext, useState } from "react";
+import { TimerControlsPanelProvider } from "./run/_component/TimerControlsPanel";
 
 interface Props {
   children: ReactNode;
 }
 
-export type TimerPhase = {
-  set: number;
-  type: string;
-  time: number;
-};
-
-const initialPhases = [{ set: 0, type: "", time: 0 }];
+const initialPhases = [{ phase: 0, type: "focus" as const, time: 0 }];
 
 export const TimerPhasesContext = createContext<TimerPhase[]>(initialPhases);
 export const TimerPhasesActionContext = createContext<
@@ -29,7 +25,7 @@ function Providers({ children }: Props) {
   return (
     <TimerPhasesContext.Provider value={timerPhases}>
       <TimerPhasesActionContext.Provider value={onChangeTimerPhases}>
-        {children}
+        <TimerControlsPanelProvider>{children}</TimerControlsPanelProvider>
       </TimerPhasesActionContext.Provider>
     </TimerPhasesContext.Provider>
   );
