@@ -6,7 +6,10 @@ import { TimerPhasesContext } from "../providers";
 import { useRouter } from "next/navigation";
 import { ENDED_TIMER_PATH } from "@/constants/routes";
 import Timer from "@/components/timer/Timer";
-import PlayButton from "@/components/timer/PlayButton";
+import TimerControlsPanel, {
+  TimerControlsPanelPortal,
+} from "@/components/timer/TimerControlsPanel";
+import TimerInfoPanel from "@/components/timer/TimerInfoPanel";
 
 function Page() {
   const timerPhases = useContext(TimerPhasesContext);
@@ -29,10 +32,13 @@ function Page() {
           onTimeout={handleTimeout}
         >
           <Timer.View as={<TimeTimer />} />
-          <Timer.Control as={<PlayButton />} />
+          <Timer.Control as={<TimerControlsPanel />} />
         </Timer>
       </section>
-      <section></section>
+      <section>
+        <TimerInfoPanel phase={{ currentId: phase, total: timerPhases }} />
+        <TimerControlsPanelPortal className="mt-auto" />
+      </section>
     </>
   );
 }

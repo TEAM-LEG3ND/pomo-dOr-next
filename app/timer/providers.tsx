@@ -1,5 +1,7 @@
 "use client";
 
+import { TimerControlsPanelProvider } from "@/components/timer/TimerControlsPanel";
+import { TimerPhase } from "@/components/timer/types";
 import { ReactNode, createContext, useState } from "react";
 
 interface Props {
@@ -23,7 +25,7 @@ function Providers({ children }: Props) {
   return (
     <TimerPhasesContext.Provider value={timerPhases}>
       <TimerPhasesActionContext.Provider value={onChangeTimerPhases}>
-        {children}
+        <TimerControlsPanelProvider>{children}</TimerControlsPanelProvider>
       </TimerPhasesActionContext.Provider>
     </TimerPhasesContext.Provider>
   );
