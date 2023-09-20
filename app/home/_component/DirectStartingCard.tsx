@@ -1,11 +1,11 @@
-import { SETTING_TIMER_PATH } from "@/constants/routes";
+import { FORM_TEMPORARY_PATH } from "@/constants/routes";
 import Link from "next/link";
 import Card from "@/lib/components/ui/Card";
 import ServerIcon from "../../_component/_asset/ServerIcon";
 
 function DirectStartingCard() {
   return (
-    <Link href={`${SETTING_TIMER_PATH}`}>
+    <Link href={`${FORM_TEMPORARY_PATH}`}>
       <Card className="flex justify-between p-4 shadow-xl shadow-neutral-50">
         <Card.Heading heading="바로 시작하기" />
         <Card.Controls

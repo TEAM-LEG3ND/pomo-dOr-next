@@ -3,8 +3,8 @@
 import { useContext, useState } from "react";
 import { TimerPhasesContext } from "../providers";
 import { useRouter } from "next/navigation";
-import { ENDED_TIMER_PATH } from "@/constants/routes";
-import Timer from "@/app/timer/run/_component/Timer";
+import { END_TEMPORARY_PATH } from "@/constants/routes";
+import Timer from "@/app/temporary/timer/_component/Timer";
 import TimeTimer from "./_component/timeTimer/TimeTimer";
 import TimerControlsPanel, {
   TimerControlsPanelPortal,
@@ -18,7 +18,7 @@ function Page() {
 
   const handleTimeout = () => {
     if (phase >= timerPhases.length - 1) {
-      router.push(ENDED_TIMER_PATH);
+      router.push(END_TEMPORARY_PATH);
       return;
     }
     setPhase((p) => p + 1);

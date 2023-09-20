@@ -1,7 +1,7 @@
 "use client";
 
-import { TimerPhasesActionContext } from "@/app/timer/providers";
-import { RUNNING_TIMER_PATH } from "@/constants/routes";
+import { TimerPhasesActionContext } from "@/app/temporary/providers";
+import { TIMER_TEMPORARY_PATH } from "@/constants/routes";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -30,7 +30,7 @@ function SettingForm() {
     const timerPhases = createTimerPhases(focusTime, breakTime, repeat);
 
     handleTimerPhases(timerPhases);
-    router.push(RUNNING_TIMER_PATH);
+    router.push(TIMER_TEMPORARY_PATH);
   };
 
   return (
