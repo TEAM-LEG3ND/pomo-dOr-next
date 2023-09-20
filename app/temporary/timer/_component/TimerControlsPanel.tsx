@@ -7,6 +7,8 @@ import {
 } from "react";
 import { TimerControlsChildrenProps } from "./Timer";
 import { createPortal } from "react-dom";
+import { useRouter } from "next/navigation";
+import { END_TEMPORARY_PATH } from "@/constants/routes";
 
 const TimerControlsPanelContext = createContext<
   ReturnType<typeof useState<HTMLElement | null>>
@@ -31,9 +33,15 @@ function TimerControlsPanel({
   isRunning,
   onTimerPause,
   onTimerResume,
-  onTimerRestart,
+  onTimerTerminate,
 }: Props) {
+  const router = useRouter();
   const [timerControlsPanelPortal, _] = useContext(TimerControlsPanelContext);
+
+  const handleTimerTerminate = () => {
+    if (onTimerTerminate) onTimerTerminate();
+    router.push(END_TEMPORARY_PATH);
+  };
 
   return timerControlsPanelPortal
     ? createPortal(
@@ -43,21 +51,21 @@ function TimerControlsPanel({
               onClick={onTimerPause}
               className="h-14 w-24 rounded-3xl bg-gray-50 text-base text-red-500 shadow-[1px_2px_6px_0px_rgba(0,0,0,0.15)]"
             >
-              STOP
+              정지
             </button>
           ) : (
             <button
               onClick={onTimerResume}
               className="h-14 w-24 rounded-3xl bg-gray-50 text-base text-red-500 shadow-[inset_1px_2px_4px_0px_rgba(0,0,0,0.25)] "
             >
-              START
+              시작
             </button>
           )}
           <button
-            onClick={onTimerRestart}
+            onClick={handleTimerTerminate}
             className="h-14 w-24 rounded-3xl bg-gray-50 text-base text-red-500 shadow-[1px_2px_6px_0px_rgba(0,0,0,0.15)]"
           >
-            RESET
+            종료
           </button>
         </div>,
         timerControlsPanelPortal,

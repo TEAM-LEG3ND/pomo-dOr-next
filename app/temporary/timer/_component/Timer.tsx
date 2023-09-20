@@ -132,11 +132,17 @@ export interface TimerControlsChildrenProps {
   onTimerPause?: () => void;
   onTimerResume?: () => void;
   onTimerRestart?: () => void;
+  onTimerTerminate?: () => void;
 }
 
 function TimerControl({ as }: ControlsProps) {
-  const { isRunning, handleTimerPause, handleTimerResume, handleTimerRestart } =
-    useContext(TimerControlContext);
+  const {
+    isRunning,
+    handleTimerPause,
+    handleTimerResume,
+    handleTimerRestart,
+    handleTimerTerminate,
+  } = useContext(TimerControlContext);
   const control = Children.only(as);
 
   return (
@@ -146,6 +152,7 @@ function TimerControl({ as }: ControlsProps) {
         onTimerPause: handleTimerPause,
         onTimerResume: handleTimerResume,
         onTimerRestart: handleTimerRestart,
+        onTimerTerminate: handleTimerTerminate,
       })}
     </>
   );
